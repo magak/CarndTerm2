@@ -30,3 +30,31 @@
 *.exe
 *.out
 *.app
+
+
+################### Project1
+
+# silly macOS
+Project1/.DS_Store
+
+# build files
+Project1/build/
+
+# editor config
+Project1/.vscode/
+
+# Xcode
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+Project1/xcuserdata/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+Project1/ide_profiles/xcode/Debug/
+Project1/ide_profiles/xcode/ExtendedKF.build/
