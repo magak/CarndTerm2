@@ -64,6 +64,9 @@ public:
    */
   void UpdateEKF(const Eigen::VectorXd &z);
 
+private:
+  Eigen::VectorXd HxNonLinear(const Eigen::VectorXd &x);
+  void normalizeAngle();
 };
 
 #endif /* KALMAN_FILTER_H_ */
