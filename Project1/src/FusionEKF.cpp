@@ -41,6 +41,7 @@ FusionEKF::FusionEKF() {
   H_laser_ << 1, 0, 0, 0,
 		  	  0, 1, 0, 0;
 
+  // intialising acceleration noise
   noise_ax = 9;
   noise_ay = 9;
 }
@@ -85,11 +86,15 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // Init the process noise covariance matrix
     ekf_.Q_ = MatrixXd(4, 4);
 
-
+    // Initializing state vector with the first sensor measurement
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
       Convert radar from polar to cartesian coordinates and initialize state.
+
       */
+    	// radar data is not enough to calculate the velocity - so we will initialize veloicity by 0
+    	// px = ro*cos(phi)
+    	// py = ro*sin(phi)
     	ekf_.x_ << measurement_pack.raw_measurements_[0]*cos(measurement_pack.raw_measurements_[1]),
     			measurement_pack.raw_measurements_[0]*sin(measurement_pack.raw_measurements_[1]),
 				0, 0;
@@ -99,9 +104,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       /**
       Initialize state.
       */
+
+    	// lidar data doesn't contain velocity - so we will initialize veloicity by 0
     	ekf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
     }
 
+    // initializing previous timestamp
     previous_timestamp_ = measurement_pack.timestamp_;
 
     // done initializing, no need to predict or update
@@ -130,6 +138,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   float dt_4 = dt_3 * dt;
 
   // updating transition matrix F
+  // matrix items that dependents on delta t
   ekf_.F_(0, 2) = dt;
   ekf_.F_(1, 3) = dt;
 
@@ -153,6 +162,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // Radar updates
+	  // using Jacobian to calculate S,K,P for radar data
 	  ekf_.H_ = tools.CalculateJacobian(ekf_.x_);
 	  ekf_.R_ = R_radar_;
 	  ekf_.UpdateEKF(measurement_pack.raw_measurements_);

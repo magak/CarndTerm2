@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+
 #include "kalman_filter.h"
 #include <cmath>
 #include <iostream>
@@ -37,6 +39,7 @@ void KalmanFilter::Update(const VectorXd &z) {
   */
 	VectorXd z_pred = H_ * x_;
 	VectorXd y = z - z_pred;
+
 	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
 	MatrixXd Si = S.inverse();
@@ -55,9 +58,10 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   TODO:
     * update the state by using Extended Kalman Filter equations
   */
-	VectorXd z_pred = HxNonLinear(x_);
-	//VectorXd z_pred = H_ * x_;//HxNonLinear(x_);
+
+	VectorXd z_pred = HxNonLinear(x_, z);
 	VectorXd y = z - z_pred;
+
 	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
 	MatrixXd Si = S.inverse();
@@ -71,7 +75,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	P_ = (I - K * H_) * P_;
 }
 
-Eigen::VectorXd KalmanFilter::HxNonLinear(const Eigen::VectorXd &x) {
+Eigen::VectorXd KalmanFilter::HxNonLinear(const Eigen::VectorXd &x, const Eigen::VectorXd &z) {
 	// Calculates h(x) for EKF which directly maps predicated x' from
 	// cartesian to polar coordinates
 
@@ -89,20 +93,35 @@ Eigen::VectorXd KalmanFilter::HxNonLinear(const Eigen::VectorXd &x) {
 	float c3 = (c1*c2);
 
 	//check division by zero
-	if(fabs(c1) < 0.0001 || fabs(px) < 0.0001){
+	if(fabs(c1) < 0.0001) {
 		cout << "Calculate hx for EKF - Division by Zero" << endl;
 		return hx;
 	}
 
+	// converting point from cartesian to polar coordinates
+	// ro
 	hx(0) = c2;
-	hx(1) = atan(py/px);
+	//phi
+	hx(1) = atan2(py, px);
+
+	// if phi from raw measurements is more than pi or less than -pi
+	// we normalize the angle
+	if(z(1) > M_PI){
+		if(hx(1) < 0){
+			hx(1) += 2*M_PI;
+		}
+	}
+
+	if(z(1) < -M_PI){
+		if(hx(1) > 0){
+			hx(1) -= 2*M_PI;
+		}
+	}
+
+	// ro dot
 	hx(2) = (px*vx+py*vy)/c2;
 
 	return hx;
-}
-
-void KalmanFilter::normalizeAngle(){
-
 }
 
 
