@@ -2,6 +2,7 @@
 #define UKF_H
 
 #include "measurement_package.h"
+#include "nis.h"
 #include "Eigen/Dense"
 #include <vector>
 #include <string>
@@ -67,6 +68,9 @@ public:
   ///* Sigma point spreading parameter
   double lambda_;
 
+  // previous timestamp
+  long long previous_timestamp_;
+
 
   /**
    * Constructor
@@ -89,7 +93,7 @@ public:
    * matrix
    * @param delta_t Time between k and k+1 in s
    */
-  void Prediction(double delta_t);
+  void Prediction();
 
   /**
    * Updates the state and the state covariance matrix using a laser measurement
@@ -102,6 +106,51 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
+  /**
+   * Retreives total lidar nis
+   */
+  double GetLidarNis();
+
+  /**
+   * Retreives total radar nis
+   */
+  double GetRadarNis();
+
+private:
+
+  ///* augmented sigma points matrix
+  MatrixXd Xsig_aug_;
+
+  ///* delta t
+  double delta_t_;
+
+  ///* lidar nis calculator
+  nis lidar_nis_;
+
+  ///* radar nis calculator
+  nis radar_nis_;
+
+  ///* lidar measurement noise covariance matrix
+  MatrixXd RLidar;
+
+  ///* radar measurement noise covariance matrix
+  MatrixXd RRadar;
+
+  /**
+    * Generates augmented sigma points
+    */
+  void AugmentedSigmaPoints();
+
+  /**
+    * Predicts augmented sigma points
+    */
+  void SigmaPointPrediction();
+
+  /**
+    * Predicts mean and covariance
+    */
+  void PredictMeanAndCovariance();
 };
 
 #endif /* UKF_H */

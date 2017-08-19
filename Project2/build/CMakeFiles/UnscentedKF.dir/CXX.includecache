@@ -1090,6 +1090,16 @@ tools.h
 Eigen/Dense
 /home/magak/udacity/CarndTerm2/Project2/src/Eigen/Dense
 
+/home/magak/udacity/CarndTerm2/Project2/src/nis.cpp
+ukf.h
+/home/magak/udacity/CarndTerm2/Project2/src/ukf.h
+Eigen/Dense
+/home/magak/udacity/CarndTerm2/Project2/src/Eigen/Dense
+
+/home/magak/udacity/CarndTerm2/Project2/src/nis.h
+Eigen/Dense
+/home/magak/udacity/CarndTerm2/Project2/src/Eigen/Dense
+
 /home/magak/udacity/CarndTerm2/Project2/src/tools.cpp
 iostream
 -
@@ -1107,12 +1117,16 @@ ukf.h
 /home/magak/udacity/CarndTerm2/Project2/src/ukf.h
 Eigen/Dense
 /home/magak/udacity/CarndTerm2/Project2/src/Eigen/Dense
+nis.h
+/home/magak/udacity/CarndTerm2/Project2/src/nis.h
 iostream
 -
 
 /home/magak/udacity/CarndTerm2/Project2/src/ukf.h
 measurement_package.h
 /home/magak/udacity/CarndTerm2/Project2/src/measurement_package.h
+nis.h
+/home/magak/udacity/CarndTerm2/Project2/src/nis.h
 Eigen/Dense
 /home/magak/udacity/CarndTerm2/Project2/src/Eigen/Dense
 vector

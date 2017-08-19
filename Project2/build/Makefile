@@ -150,6 +150,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/UnscentedKF.dir/build.make CMakeFiles/UnscentedKF.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+nis.o: nis.cpp.o
+
+.PHONY : nis.o
+
+# target to build an object file
+nis.cpp.o:
+	$(MAKE) -f CMakeFiles/UnscentedKF.dir/build.make CMakeFiles/UnscentedKF.dir/nis.cpp.o
+.PHONY : nis.cpp.o
+
+nis.i: nis.cpp.i
+
+.PHONY : nis.i
+
+# target to preprocess a source file
+nis.cpp.i:
+	$(MAKE) -f CMakeFiles/UnscentedKF.dir/build.make CMakeFiles/UnscentedKF.dir/nis.cpp.i
+.PHONY : nis.cpp.i
+
+nis.s: nis.cpp.s
+
+.PHONY : nis.s
+
+# target to generate assembly for a file
+nis.cpp.s:
+	$(MAKE) -f CMakeFiles/UnscentedKF.dir/build.make CMakeFiles/UnscentedKF.dir/nis.cpp.s
+.PHONY : nis.cpp.s
+
 tools.o: tools.cpp.o
 
 .PHONY : tools.o
@@ -216,6 +243,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... nis.o"
+	@echo "... nis.i"
+	@echo "... nis.s"
 	@echo "... tools.o"
 	@echo "... tools.i"
 	@echo "... tools.s"

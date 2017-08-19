@@ -159,6 +159,11 @@
 			<location>/home/magak/udacity/CarndTerm2/Project2/src/tools.cpp</location>
 		</link>
 		<link>
+			<name>[Targets]/[exe] UnscentedKF/Source Files/nis.cpp</name>
+			<type>1</type>
+			<location>/home/magak/udacity/CarndTerm2/Project2/src/nis.cpp</location>
+		</link>
+		<link>
 			<name>[Targets]/[exe] UnscentedKF/Header Files</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>

@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/UnscentedKF.dir/ukf.cpp.o"
   "CMakeFiles/UnscentedKF.dir/main.cpp.o"
   "CMakeFiles/UnscentedKF.dir/tools.cpp.o"
+  "CMakeFiles/UnscentedKF.dir/nis.cpp.o"
   "UnscentedKF.pdb"
   "UnscentedKF"
 )
