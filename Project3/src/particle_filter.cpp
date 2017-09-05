@@ -24,7 +24,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	//   x, y, theta and their uncertainties from GPS) and all weights to 1. 
 	// Add random Gaussian noise to each particle.
 	// NOTE: Consult particle_filter.h for more information about this method (and others in this file).
-	num_particles = 200;
+	num_particles = 50;
 	// random engine
 	default_random_engine gen;
 
@@ -60,14 +60,20 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 	normal_distribution<double> dist_y(0.0, std_pos[1]);
 	normal_distribution<double> dist_theta(0.0, std_pos[2]);
 
-	for(int i = 0; i < num_particles; i++){
-		auto x_upd = particles[i].x + (velocity/yaw_rate)*(sin(particles[i].theta+yaw_rate*delta_t)-sin(particles[i].theta));
-		auto y_upd = particles[i].y + (velocity/yaw_rate)*(cos(particles[i].theta)-cos(particles[i].theta+yaw_rate*delta_t));
-		auto theta_upd = particles[i].theta + yaw_rate*delta_t;
-
-		particles[i].x = x_upd + dist_x(gen);
-		particles[i].y = y_upd + dist_y(gen);
-		particles[i].theta = theta_upd + dist_theta(gen);
+	//avoid division by zero
+	if (fabs(yaw_rate) > 0.0001) {
+		for(int i = 0; i < num_particles; i++){
+			particles[i].x = particles[i].x + (velocity/yaw_rate)*(sin(particles[i].theta+yaw_rate*delta_t)-sin(particles[i].theta)) + dist_x(gen);
+			particles[i].y = particles[i].y + (velocity/yaw_rate)*(cos(particles[i].theta)-cos(particles[i].theta+yaw_rate*delta_t)) + dist_y(gen);
+			particles[i].theta = particles[i].theta + yaw_rate*delta_t + dist_theta(gen);
+		}
+	}
+	else {
+		for(int i = 0; i < num_particles; i++){
+			particles[i].x = particles[i].x + velocity*delta_t*cos(particles[i].theta) + dist_x(gen);
+			particles[i].y = particles[i].y + velocity*delta_t*sin(particles[i].theta) + dist_y(gen);
+			particles[i].theta = particles[i].theta + dist_theta(gen);
+		}
 	}
 }
 
