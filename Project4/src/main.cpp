@@ -43,6 +43,7 @@ int main()
   PID pid;
   PID speedPid;
   double speedLimit = 60;
+  bool twiddlingMode = false;
   // TODO: Initialize the pid variable.
 
   //pid.Init(0.3, 5.0, 0.0002);
@@ -50,7 +51,7 @@ int main()
   speedPid.Init(0.3, 20.0, 0.0002);
   auto start = std::clock();
 
-  h.onMessage([&pid,&speedPid,&speedLimit,&start](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
+  h.onMessage([&pid,&speedPid,&speedLimit,&start,&twiddlingMode](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
@@ -84,7 +85,9 @@ int main()
           speedPid.UpdateError(speedCte);
           speed_throttle = speedPid.GetControlValue();
           
-          twiddle(pid, speedPid, ws);
+          if(twiddlingMode){
+        	  twiddle(pid, speedPid, ws);
+          }
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
